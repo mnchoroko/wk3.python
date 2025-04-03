@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 name: Check SQL Assignment 1
 
 on:
@@ -7,11 +8,22 @@ on:
   pull_request:
     branches:
       - main
+=======
+name: Check SQL Assignment Week 3
+
+
+on:
+  workflow_dispatch:
+>>>>>>> 30014ed09043fe37d08680cbbace88dff26fb863
 
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
+<<<<<<< HEAD
+=======
+      DB_DATABASE: salesDB
+>>>>>>> 30014ed09043fe37d08680cbbace88dff26fb863
       DB_USER: root
       DB_PASSWORD: root
 
@@ -19,11 +31,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+<<<<<<< HEAD
       - name: Update and Install MySQL
+=======
+      - name: Update and install dependencies
+>>>>>>> 30014ed09043fe37d08680cbbace88dff26fb863
         run: |
           sudo apt-get update
           sudo apt-get install mysql-server mysql-client -y
 
+<<<<<<< HEAD
       - name: Start MySQL Service
         run: sudo /etc/init.d/mysql start
 
@@ -68,3 +85,27 @@ jobs:
             exit 1
           fi
           echo "Database demo was successfully dropped."
+=======
+      - name: Start MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;" -u$DB_USER -p$DB_PASSWORD
+
+      - name: Execute and Test SQL answers
+        run: |
+              # Check if the answers.sql file exists
+              if [ ! -f ./answers.sql ]; then
+                echo "The answers.sql file is missing. Failing the workflow."
+                exit 1
+              fi
+        
+              # Check if the file is truly empty 
+              if ! grep -q '[^[:space:]#]' ./answers.sql; then
+                echo "The answers.sql file is empty or contains only comments. Failing the workflow."
+                exit 1
+              fi
+        
+              # Run the SQL script
+              sudo mysql -u$DB_USER -p$DB_PASSWORD $DB_DATABASE < ./answers.sql
+        
+>>>>>>> 30014ed09043fe37d08680cbbace88dff26fb863
